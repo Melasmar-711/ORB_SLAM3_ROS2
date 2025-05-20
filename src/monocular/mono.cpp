@@ -1,34 +1,37 @@
 #include <iostream>
-#include <algorithm>
-#include <fstream>
-#include <chrono>
-
 #include "rclcpp/rclcpp.hpp"
 #include "monocular-slam-node.hpp"
-
 #include "System.h"
-
 
 int main(int argc, char **argv)
 {
-    if(argc < 3)
-    {
-        std::cerr << "\nUsage: ros2 run orbslam mono path_to_vocabulary path_to_settings" << std::endl;
+    if(argc < 3) {
+        std::cerr << "\nUsage: ros2 run orbslam mono path_to_vocabulary path_to_settings [--webcam [index]]\n";
         return 1;
     }
 
     rclcpp::init(argc, argv);
 
-    // malloc error using new.. try shared ptr
-    // Create SLAM system. It initializes all system threads and gets ready to process frames.
-    bool visualization = true;
-    ORB_SLAM3::System SLAM(argv[1], argv[2], ORB_SLAM3::System::MONOCULAR, visualization);
+    bool use_webcam = false;
+    int webcam_index = 0;
+    
+    for(int i = 0; i < argc; ++i) {
+        if(std::string(argv[i]) == "--webcam") {
+            use_webcam = true;
+            if(i+1 < argc) webcam_index = atoi(argv[i+1]);
+            break;
+        }
+    }
 
-    auto node = std::make_shared<MonocularSlamNode>(&SLAM);
-    std::cout << "============================ " << std::endl;\
+    ORB_SLAM3::System SLAM(argv[1], argv[2], ORB_SLAM3::System::MONOCULAR, true);
+    auto node = std::make_shared<MonocularSlamNode>(&SLAM, rclcpp::NodeOptions(), use_webcam, webcam_index);
 
-    rclcpp::spin(node);
+    if(use_webcam) {
+        node->RunFromCamera();
+    } else {
+        rclcpp::spin(node);
+    }
+
     rclcpp::shutdown();
-
     return 0;
 }
