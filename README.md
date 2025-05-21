@@ -65,14 +65,18 @@ tar -xvzf <Your_Package_Dir>/vocabulary/ORBvoc.txt.tar.gz
 ```
 ros2 run orbslam3 mono <Package_Dir>/vocabulary/ORBvoc.txt <Package_Dir>/config/monocular/sim_camera.yaml 
 ```
+## MONO
 4. you can from the web cam using 
 ```
 ros2 run orbslam3 mono <Package_Dir>/vocabulary/ORBvoc.txt <Package_Dir>/config/monocular/web_cam.yaml --webcam
 
 ```
 
-
-
+## MONO-Inertial
+5. you need a ros2 bag that have the images and imu reading streamed recorded . i still have to record a good one where the images aren't so distant from each other
+```
+ros2 run orbslam3 mono-inertial <Package_Dir>/vocabulary/ORBvoc.txt <Package_Dir>/config/monocular-inertial/mono_inertial_sim.yaml
+```
 
 ## Acknowledgments
 This repository is modified from [this](https://github.com/zang09/ORB_SLAM3_ROS2) repository.  
