@@ -24,6 +24,7 @@ find_package(Sophus REQUIRED)
 find_package(Pangolin REQUIRED)
 find_package(ORB_SLAM3 REQUIRED)
 find_package(Threads REQUIRED)
+find_package(Boost REQUIRED)
 
 include_directories(
   include
@@ -40,6 +41,7 @@ add_executable(mono
   src/monocular/mono.cpp
   src/monocular/monocular-slam-node.cpp
 )
+
 ament_target_dependencies(mono rclcpp sensor_msgs cv_bridge ORB_SLAM3 Pangolin OpenCV)
 
 add_executable(rgbd
@@ -60,7 +62,14 @@ add_executable(stereo-inertial
 )
 ament_target_dependencies(stereo-inertial rclcpp sensor_msgs cv_bridge ORB_SLAM3 Pangolin OpenCV)
 
-install(TARGETS mono rgbd stereo stereo-inertial DESTINATION lib/${PROJECT_NAME})
+
+add_executable(mono-inertial
+  src/mono_inertial/monocular_inertial_slam_node.cpp
+  src/mono_inertial/mono_inertial.cpp
+)
+ament_target_dependencies(mono-inertial rclcpp sensor_msgs cv_bridge message_filters ORB_SLAM3 Pangolin OpenCV ${Boost_LIBRARIES} )
+
+install(TARGETS mono rgbd stereo stereo-inertial mono-inertial DESTINATION lib/${PROJECT_NAME})
 
 # Install launch files.
 #install(DIRECTORY launch config vocabulary
