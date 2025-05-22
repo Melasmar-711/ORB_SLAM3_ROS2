@@ -21,8 +21,7 @@ Camera.width: 640
 Camera.height: 640
 
 # Camera frames per second 
-Camera.fps: 2
-
+Camera.fps: 25
 # Color order of the images (0: BGR, 1: RGB. It is ignored if images are grayscale)
 Camera.RGB: 1
 
@@ -41,11 +40,11 @@ Tbc: !!opencv-matrix
          0.0, 0.0, 0.0, 1.0]
 
 # IMU Parameters
-IMU.NoiseGyro: 0.0      # Since you're generating perfect angular velocity
-IMU.NoiseAcc: 0.0       # Since you're generating perfect acceleration
-IMU.GyroWalk: 0.0       # No random walk in your simulation
-IMU.AccWalk: 0.0        # No random walk in your simulation
-IMU.Frequency: 200      # Matches your publishing rate
+IMU.NoiseGyro: 0.0     
+IMU.NoiseAcc: 0.0     
+IMU.GyroWalk: 0.0     
+IMU.AccWalk: 0.0       
+IMU.Frequency: 200      
 
 
 IMU.InsertKFsWhenLost: true  # Usually kept true
